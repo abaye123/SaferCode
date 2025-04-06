@@ -17,7 +17,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- כותרת ראשית -->
         <TextBlock
             Grid.Row="0"
             HorizontalAlignment="Center"
@@ -26,7 +25,6 @@
             FontWeight="SemiBold"
             Margin="0,0,0,20"/>
 
-        <!-- תיאור והוראות שימוש -->
         <TextBlock 
             Grid.Row="1"
             HorizontalAlignment="Center"
@@ -41,7 +39,6 @@
             המערכת מאפשרת טעינה ליתרה באמצעות שוברים, לחצו על כפתור "כניסת משתמשים" כדי לממש שובר או לצפות בהיסטוריית הטעינות. למנהלי מערכת - השתמשו בכפתור הניהול בפינה הימנית העליונה.
         </TextBlock>
 
-        <!-- כפתור כניסת משתמשים -->
         <Button x:Name="UserButton" Grid.Row="2" Click="UserButton_Click"
                 HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="200" Width="500">

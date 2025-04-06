@@ -25,7 +25,6 @@ namespace SaferCode.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // בדיקה אם מסד הנתונים קיים ויצירת טבלת קודי תשלום אם צריך
             EnsureDatabaseSetup();
         }
 
@@ -33,12 +32,10 @@ namespace SaferCode.Pages
         {
             try
             {
-                // מוודא שהשירות נוצר - הבנאי שלו יוצר את הטבלה אם צריך
                 var dbService = new DatabaseService();
             }
             catch (Exception ex)
             {
-                // שגיאה ביצירת/בגישה למסד הנתונים
                 ContentDialog errorDialog = new ContentDialog
                 {
                     Title = "שגיאת מסד נתונים",
@@ -69,7 +66,6 @@ namespace SaferCode.Pages
                         // האימות הצליח - בדוק אם יש למשתמש הרשאות מנהל במערכת ההפעלה
                         if (await CheckAdminPrivileges())
                         {
-                            // ניווט לדף הניהול
                             Frame.Navigate(typeof(CodeGenerationPage));
                         }
                         else
@@ -155,9 +151,6 @@ namespace SaferCode.Pages
                 case UserConsentVerificationResult.DeviceBusy:
                     message = "התקן האימות עסוק. אנא נסה שוב מאוחר יותר.";
                     break;
-                //case UserConsentVerificationResult.DeviceNotSet:
-                //    message = "אין התקן אימות מוגדר במחשב. אנא הגדר Windows Hello בהגדרות מערכת ההפעלה.";
-                //    break;
                 default:
                     message = "האימות נכשל. נסה שוב או השתמש בחשבון מנהל אחר.";
                     break;
@@ -198,7 +191,6 @@ namespace SaferCode.Pages
                     break;
             }
 
-            // אפשרות להציג התחברות חלופית
             ContentDialog dialog = new ContentDialog
             {
                 Title = "Windows Hello אינו זמין",
@@ -213,14 +205,12 @@ namespace SaferCode.Pages
 
             if (result == ContentDialogResult.Primary)
             {
-                // הצג דיאלוג התחברות חלופי לאימות מנהל
                 await ShowAlternativeAdminLoginDialog();
             }
         }
 
         private async Task ShowAlternativeAdminLoginDialog()
         {
-            // דיאלוג התחברות חלופי למנהל מערכת
             ContentDialog loginDialog = new ContentDialog
             {
                 Title = "התחברות כמנהל מערכת",
@@ -231,10 +221,8 @@ namespace SaferCode.Pages
                 FlowDirection = FlowDirection.RightToLeft
             };
 
-            // יצירת תוכן לדיאלוג
             StackPanel panel = new StackPanel { Spacing = 10 };
 
-            // הוספת אייקון מנהל
             FontIcon adminIcon = new FontIcon
             {
                 Glyph = "\uE7EF",
@@ -277,7 +265,6 @@ namespace SaferCode.Pages
                 string username = userNameBox.Text;
                 string password = passwordBox.Password;
 
-                // בדיקת פרטי המשתמש מול מסד הנתונים וודא שיש הרשאות מנהל
                 try
                 {
                     bool isAdmin = true; //await AuthenticateAdmin(username, password);
@@ -315,7 +302,6 @@ namespace SaferCode.Pages
 
         private async Task<bool> AuthenticateAdmin(string username, string password)
         {
-            // בדיקת פרטי מנהל מול מסד הנתונים
             return await Task.Run(() =>
             {
                 try
@@ -325,7 +311,6 @@ namespace SaferCode.Pages
                         connection.Open();
                         using (var command = new SQLiteCommand(connection))
                         {
-                            // בודק אם המשתמש קיים וגם שהסוג שלו הוא "admin"
                             command.CommandText = "SELECT COUNT(*) FROM users WHERE username=@username AND password=@password AND usertype='admin'";
                             command.Parameters.AddWithValue("@username", username);
                             command.Parameters.AddWithValue("@password", password);
@@ -355,7 +340,6 @@ namespace SaferCode.Pages
                 FlowDirection = FlowDirection.RightToLeft
             };
 
-            // יצירת תוכן לדיאלוג
             StackPanel panel = new StackPanel { Spacing = 10 };
 
             TextBox userNameBox = new TextBox
@@ -384,7 +368,6 @@ namespace SaferCode.Pages
                 string username = userNameBox.Text;
                 string password = passwordBox.Password;
 
-                // בדיקת פרטי המשתמש מול מסד הנתונים
                 try
                 {
                     UserData? userData = await AuthenticateUser(username, password);
@@ -422,7 +405,6 @@ namespace SaferCode.Pages
 
         private async Task<UserData?> AuthenticateUser(string username, string password)
         {
-            // יישום אמיתי של בדיקת פרטי המשתמש מול מסד הנתונים
             return await Task.Run(() =>
             {
                 try
@@ -444,7 +426,6 @@ namespace SaferCode.Pages
                                     string firstName = reader.GetString(2);
                                     string lastName = reader.GetString(3);
 
-                                    // חישוב היתרה הנוכחית של המשתמש
                                     decimal balance = GetUserBalance(connection, userId);
 
                                     return new UserData
@@ -470,15 +451,12 @@ namespace SaferCode.Pages
 
         private decimal GetUserBalance(SQLiteConnection connection, int userId)
         {
-            // חישוב היתרה - כל התשלומים פחות השימושים
             using (var command = new SQLiteCommand(connection))
             {
-                // סכום כל התשלומים
                 command.CommandText = "SELECT COALESCE(SUM(Amount), 0) FROM Payments WHERE userid = @userId";
                 command.Parameters.AddWithValue("@userId", userId);
                 var totalPayments = Convert.ToDecimal(command.ExecuteScalar());
 
-                // סכום כל השימושים
                 command.CommandText = "SELECT COALESCE(SUM(Amount), 0) FROM actions WHERE userid = @userId";
                 var totalUsage = Convert.ToDecimal(command.ExecuteScalar());
 

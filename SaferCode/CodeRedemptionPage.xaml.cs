@@ -140,7 +140,6 @@ namespace SaferCode.Pages
 
                     CodeTextBox.Text = string.Empty;
 
-                    // עדכון היסטוריית הטעינות
                     await LoadRedemptionHistory();
                 }
                 else
@@ -172,7 +171,6 @@ namespace SaferCode.Pages
 
         private void CloseApp_Click(object sender, RoutedEventArgs e)
         {
-            // סגירת האפליקציה
             Application.Current.Exit();
         }
     }

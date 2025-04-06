@@ -173,12 +173,10 @@ namespace SaferCode.Services
             }
             catch (Exception ex)
             {
-                // רשום את השגיאה ללוג
                 System.Diagnostics.Debug.WriteLine($"שגיאה בקבלת קודי תשלום: {ex.Message}");
-                // החזר רשימה ריקה במקום לזרוק שגיאה למעלה
             }
 
-            return codes; // תמיד יוחזר אובייקט חוקי, אפילו אם ריק
+            return codes;
         }
 
         public async Task<(bool Success, string Message, decimal Amount)> RedeemCode(string code, int userId)
@@ -195,7 +193,6 @@ namespace SaferCode.Services
                     {
                         try
                         {
-                            // Check if code exists and is unused
                             using (var command = new SQLiteCommand(connection))
                             {
                                 command.CommandText = @"
@@ -206,14 +203,13 @@ namespace SaferCode.Services
                                 var result = command.ExecuteScalar();
                                 if (result == null)
                                 {
-                                    message = "קוד שגוי או כבר נוצל";
+                                    message = "קוד שגוי או פג תוקף";
                                     return;
                                 }
 
                                 amount = Convert.ToDecimal(result);
                             }
 
-                            // Mark code as used
                             using (var command = new SQLiteCommand(connection))
                             {
                                 command.CommandText = @"
@@ -226,7 +222,6 @@ namespace SaferCode.Services
                                 command.ExecuteNonQuery();
                             }
 
-                            // Add payment to user
                             using (var command = new SQLiteCommand(connection))
                             {
                                 command.CommandText = @"

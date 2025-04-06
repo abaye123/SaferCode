@@ -46,7 +46,6 @@ namespace SaferCode.Pages
             filter ??= "All";
             try
             {
-                // וודא שהאובייקטים קיימים
                 if (_codes == null)
                 {
                     _codes = new ObservableCollection<CodeViewModel>();
@@ -73,10 +72,9 @@ namespace SaferCode.Pages
 
                 var codes = await _databaseService.GetPaymentCodes(isUsed);
 
-                // כאן יתכן מאוד שרשימת הקודים ריקה
                 if (codes == null)
                 {
-                    codes = new List<PaymentCode>(); // וודא שזו לא רשימה null
+                    codes = new List<PaymentCode>();
                 }
 
                 foreach (var code in codes)
@@ -98,7 +96,6 @@ namespace SaferCode.Pages
                     });
                 }
 
-                // עדכן את הממשק משתמש שהטעינה הושלמה בהצלחה, אפילו אם אין קודים
                 if (StatusInfoBar != null)
                 {
                     StatusInfoBar.Title = "עודכן";
@@ -111,7 +108,6 @@ namespace SaferCode.Pages
             }
             catch (Exception ex)
             {
-                // טיפול בשגיאה והצגה למשתמש
                 System.Diagnostics.Debug.WriteLine($"שגיאה בטעינת קודים: {ex.Message}");
 
                 if (StatusInfoBar != null)
@@ -152,7 +148,6 @@ namespace SaferCode.Pages
                 StatusInfoBar.Message = $"יוצרו {codes.Count} קודים חדשים";
                 StatusInfoBar.Severity = InfoBarSeverity.Success;
 
-                // עדכון הרשימה הכללית
                 if (FilterComboBox.SelectedItem is ComboBoxItem item && item.Tag != null)
                 {
                     await LoadCodes(item.Tag?.ToString());
@@ -162,10 +157,8 @@ namespace SaferCode.Pages
                     await LoadCodes("All");
                 }
 
-                // עדכון רשימת הקודים האחרונים
                 UpdateLastGeneratedCodes(codes);
 
-                // הצגת הדיאלוג עם הקודים החדשים
                 await ShowGeneratedCodesDialog();
             }
             catch (Exception ex)
@@ -180,14 +173,12 @@ namespace SaferCode.Pages
             }
         }
 
-        // פונקציה לעדכון רשימת הקודים האחרונים
         private void UpdateLastGeneratedCodes(List<string> newCodes)
         {
             _lastGeneratedCodes.Clear();
 
             foreach (var code in newCodes)
             {
-                // יצירת מודל עם הקוד והסכום הנוכחי שנבחר
                 _lastGeneratedCodes.Add(new CodeViewModel
                 {
                     Code = code,
@@ -200,16 +191,13 @@ namespace SaferCode.Pages
             }
         }
 
-        // פונקציה חדשה להצגת דיאלוג הקודים
         private async Task ShowGeneratedCodesDialog()
         {
-            // וודא שיש קודים להצגה
             if (_lastGeneratedCodes.Count > 0)
             {
-                // יצירת דיאלוג חדש
                 _lastGeneratedCodesDialog = new ContentDialog
                 {
-                    XamlRoot = this.XamlRoot, // נדרש ב-WinUI 3
+                    XamlRoot = this.XamlRoot,
                     Title = $"נוצרו {_lastGeneratedCodes.Count} קודים חדשים",
                     PrimaryButtonText = "סגור",
                     DefaultButton = ContentDialogButton.Primary,
@@ -218,14 +206,12 @@ namespace SaferCode.Pages
                     MinHeight = 600
                 };
 
-                // יצירת Grid עבור תוכן הדיאלוג
                 var contentGrid = new Grid();
                 contentGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 contentGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 contentGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 contentGrid.Margin = new Thickness(0, 0, 0, 20);
 
-                // כותרת משנה (הסכום)
                 var subtitle = new TextBlock
                 {
                     Text = $"סכום כל שובר: {AmountBox.Value} ₪",
@@ -235,7 +221,6 @@ namespace SaferCode.Pages
                 Grid.SetRow(subtitle, 0);
                 contentGrid.Children.Add(subtitle);
 
-                // טבלת הקודים
                 var dataGrid = new DataGrid
                 {
                     AutoGenerateColumns = false,
@@ -246,7 +231,6 @@ namespace SaferCode.Pages
                     Margin = new Thickness(0, 0, 0, 15)
                 };
 
-                // הוספת העמודות לטבלה
                 dataGrid.Columns.Add(new DataGridTextColumn
                 {
                     Header = "קוד שובר",
@@ -269,7 +253,6 @@ namespace SaferCode.Pages
                 Grid.SetRow(dataGrid, 1);
                 contentGrid.Children.Add(dataGrid);
 
-                // כפתורי פעולות
                 var actionsPanel = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
@@ -299,10 +282,8 @@ namespace SaferCode.Pages
                 Grid.SetRow(actionsPanel, 2);
                 contentGrid.Children.Add(actionsPanel);
 
-                // הגדרת תוכן הדיאלוג
                 _lastGeneratedCodesDialog.Content = contentGrid;
 
-                // הצגת הדיאלוג
                 await _lastGeneratedCodesDialog.ShowAsync();
             }
         }
@@ -330,7 +311,6 @@ namespace SaferCode.Pages
             savePicker.FileTypeChoices.Add("קובץ CSV", new List<string>() { ".csv" });
             savePicker.SuggestedFileName = $"payment-codes-{DateTime.Now:yyyyMMdd}";
 
-            // נדרש עבור WinUI 3
             if (MainWindow.Current != null)
             {
                 InitializeWithWindow.Initialize(savePicker, WindowNative.GetWindowHandle(MainWindow.Current));
@@ -378,8 +358,6 @@ namespace SaferCode.Pages
 
         private void PrintButton_Click(object sender, RoutedEventArgs e)
         {
-            // מימוש מלא של הדפסה ב-WinUI 3 דורש שימוש ב-PrintManager
-            // זהו מימוש מצומצם שיש להרחיב באפליקציה אמיתית
             StatusInfoBar.Title = "הדפסה";
             StatusInfoBar.Message = "פונקציית ההדפסה הישירה עדיין לא מומשה";
             StatusInfoBar.Severity = InfoBarSeverity.Informational;
@@ -402,7 +380,6 @@ namespace SaferCode.Pages
             savePicker.FileTypeChoices.Add("קובץ CSV", new List<string>() { ".csv" });
             savePicker.SuggestedFileName = $"last-generated-codes-{DateTime.Now:yyyyMMdd}";
 
-            // נדרש עבור WinUI 3
             if (MainWindow.Current != null)
             {
                 InitializeWithWindow.Initialize(savePicker, WindowNative.GetWindowHandle(MainWindow.Current));
@@ -430,7 +407,6 @@ namespace SaferCode.Pages
                         StatusInfoBar.Severity = InfoBarSeverity.Success;
                         StatusInfoBar.IsOpen = true;
 
-                        // סגירת דיאלוג אם פתוח
                         //if (_lastGeneratedCodesDialog != null)
                         //{
                         //    _lastGeneratedCodesDialog.Hide();
@@ -465,8 +441,6 @@ namespace SaferCode.Pages
                 return;
             }
 
-            // מימוש מלא של הדפסה ב-WinUI 3 דורש שימוש ב-PrintManager
-            // זהו מימוש מצומצם שיש להרחיב באפליקציה אמיתית
             StatusInfoBar.Title = "הדפסה";
             StatusInfoBar.Message = "פונקציית ההדפסה של קודים אחרונים עדיין לא מומשה";
             StatusInfoBar.Severity = InfoBarSeverity.Informational;
@@ -480,7 +454,6 @@ namespace SaferCode.Pages
 
         private void CloseApp_Click(object sender, RoutedEventArgs e)
         {
-            // סגירת האפליקציה
             Application.Current.Exit();
         }
     }
