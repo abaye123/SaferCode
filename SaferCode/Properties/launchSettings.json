@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SaferCode (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SaferCode (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
