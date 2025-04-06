@@ -9,23 +9,40 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
-
     <Grid Margin="20" FlowDirection="RightToLeft">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- כותרת ראשית -->
         <TextBlock
             Grid.Row="0"
             HorizontalAlignment="Center"
             Text="שוברי טעינה לסייפר"
             Style="{StaticResource HeaderTextBlockStyle}"
-            Margin="0,0,0,40"/>
+            FontWeight="SemiBold"
+            Margin="0,0,0,20"/>
 
-        <!-- כפתור כניסת משתמשים במרכז -->
-        <Button x:Name="UserButton" Grid.Row="1" Click="UserButton_Click"
+        <!-- תיאור והוראות שימוש -->
+        <TextBlock 
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Foreground="#0078D7"
+            FontSize="16"
+            Margin="0,0,0,40"
+            MaxWidth="750">
+            <Run FontWeight="SemiBold">מערכת ניהול שוברי טעינה לסייפר</Run>
+            <LineBreak/>
+            המערכת מאפשרת טעינה ליתרה באמצעות שוברים, לחצו על כפתור "כניסת משתמשים" כדי לממש שובר או לצפות בהיסטוריית הטעינות. למנהלי מערכת - השתמשו בכפתור הניהול בפינה הימנית העליונה.
+        </TextBlock>
+
+        <!-- כפתור כניסת משתמשים -->
+        <Button x:Name="UserButton" Grid.Row="2" Click="UserButton_Click"
                 HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="200" Width="500">
             <StackPanel>
@@ -36,7 +53,6 @@
             </StackPanel>
         </Button>
 
-        <!-- כפתור ממשק מנהל קטן בפינה הימנית למעלה -->
         <Button x:Name="AdminButton" Grid.Row="0" Click="AdminButton_Click"
                 HorizontalAlignment="Right" VerticalAlignment="Top" 
                 Height="40" Padding="10,5" Margin="0,10,0,0">
@@ -46,8 +62,8 @@
             </StackPanel>
         </Button>
 
-        <TextBlock Grid.Row="2" Text="© abaye 2025 v0.2.0" 
-                   HorizontalAlignment="Center" VerticalAlignment="Bottom" 
-                   Opacity="0.7" Margin="0,0,0,20"/>
+        <TextBlock x:Name="VersionTextBlock" Grid.Row="3" Text="© abaye 2025 v0.3.0" 
+           HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+           Opacity="0.7" Margin="0,0,0,20"/>
     </Grid>
 </Page>

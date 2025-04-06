@@ -41,8 +41,9 @@ namespace SaferCode.Pages
             await LoadCodes();
         }
 
-        private async Task LoadCodes(string filter = "All")
+        private async Task LoadCodes(string? filter = "All")
         {
+            filter ??= "All";
             try
             {
                 // וודא שהאובייקטים קיימים
@@ -154,7 +155,7 @@ namespace SaferCode.Pages
                 // עדכון הרשימה הכללית
                 if (FilterComboBox.SelectedItem is ComboBoxItem item && item.Tag != null)
                 {
-                    await LoadCodes(item.Tag.ToString());
+                    await LoadCodes(item.Tag?.ToString());
                 }
                 else
                 {
@@ -310,7 +311,7 @@ namespace SaferCode.Pages
         {
             if (FilterComboBox.SelectedItem is ComboBoxItem item && item.Tag != null)
             {
-                await LoadCodes(item.Tag.ToString());
+                await LoadCodes(item.Tag?.ToString());
             }
         }
 
@@ -318,7 +319,7 @@ namespace SaferCode.Pages
         {
             if (FilterComboBox.SelectedItem is ComboBoxItem item && item.Tag != null)
             {
-                await LoadCodes(item.Tag.ToString());
+                await LoadCodes(item.Tag?.ToString());
             }
         }
 

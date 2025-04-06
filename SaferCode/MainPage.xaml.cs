@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.UI;
 using Microsoft.UI;
+using Windows.UI.Popups;
 
 namespace SaferCode.Pages
 {
@@ -344,7 +345,6 @@ namespace SaferCode.Pages
 
         private async void UserButton_Click(object sender, RoutedEventArgs e)
         {
-            // לצורך הדוגמה, נציג דיאלוג התחברות למשתמש
             ContentDialog loginDialog = new ContentDialog
             {
                 Title = "התחברות למערכת",
@@ -387,7 +387,7 @@ namespace SaferCode.Pages
                 // בדיקת פרטי המשתמש מול מסד הנתונים
                 try
                 {
-                    UserData userData = await AuthenticateUser(username, password);
+                    UserData? userData = await AuthenticateUser(username, password);
                     if (userData != null)
                     {
                         Frame.Navigate(typeof(CodeRedemptionPage), userData);
@@ -420,7 +420,7 @@ namespace SaferCode.Pages
             }
         }
 
-        private async Task<UserData> AuthenticateUser(string username, string password)
+        private async Task<UserData?> AuthenticateUser(string username, string password)
         {
             // יישום אמיתי של בדיקת פרטי המשתמש מול מסד הנתונים
             return await Task.Run(() =>

@@ -15,7 +15,7 @@ namespace SaferCode.Pages
         private DatabaseService _databaseService;
         private ObservableCollection<RedemptionHistoryItem> _redemptionHistory;
         private int _userId;
-        private string _userName;
+        private string _userName = string.Empty;
         private decimal _currentBalance;
 
         public CodeRedemptionPage()
@@ -45,7 +45,7 @@ namespace SaferCode.Pages
 
         private void UpdateBalanceDisplay()
         {
-            BalanceTextBlock.Text = $"יתרה נוכחית: {_currentBalance} ₪";
+            BalanceTextBlock.Text = $"היתרה הנוכחית שלך היא: {_currentBalance} ₪";
         }
 
         private async Task LoadRedemptionHistory()

@@ -18,11 +18,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="0"
-            Text="הפקת שוברי טעינה חד פעמיים"
-            Style="{StaticResource TitleTextBlockStyle}"
-            Margin="0,0,0,20"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+            <Button x:Name="BackIconButton" Style="{StaticResource TextBlockButtonStyle}" Padding="10" Click="BackButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;" FontSize="20"/>
+            </Button>
+            <TextBlock
+                x:Name="WelcomeTextBlock"
+                Text="ניהול שוברי טעינה חד פעמיים"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Margin="10,0,0,0"/>
+        </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" Spacing="12">
             <StackPanel Orientation="Horizontal" Spacing="10">

@@ -19,14 +19,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- שורת הכותרת עם אייקון חץ חזרה -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
             <Button x:Name="BackIconButton" Style="{StaticResource TextBlockButtonStyle}" Padding="10" Click="BackButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;" FontSize="20"/>
             </Button>
             <TextBlock
                 x:Name="WelcomeTextBlock"
-                Text="טעינת קוד תשלום"
+                Text="טעינה ליתרה באמצעות שובר"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Margin="10,0,0,0"/>
         </StackPanel>
@@ -34,7 +33,7 @@
         <TextBlock
             Grid.Row="1"
             x:Name="BalanceTextBlock"
-            Text="יתרה נוכחית: 0 ₪"
+            Text="היתרה הנוכחית בטעינה..."
             Style="{StaticResource SubtitleTextBlockStyle}"
             Margin="0,0,0,30"/>
 
@@ -45,7 +44,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="הזן קוד טעינה:" Style="{StaticResource BodyTextBlockStyle}" 
+                <TextBlock Grid.Column="0" Text="הזן את קוד שובר הטעינה:" Style="{StaticResource BodyTextBlockStyle}" 
                            FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
 
                 <Grid Grid.Column="1">
@@ -54,7 +53,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="CodeTextBox" Grid.Column="0" PlaceholderText="קוד טעינה" 
+                    <TextBox x:Name="CodeTextBox" Grid.Column="0" PlaceholderText="קוד השובר" 
                              FontSize="20" HorizontalAlignment="Stretch" KeyDown="CodeTextBox_KeyDown"
                              MaxWidth="500"/>
 

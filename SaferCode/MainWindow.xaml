@@ -7,9 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="מערכת ניהול קודי תשלום">
+    Title="ניהול שוברי טעינה">
 
-    <Grid>
+    <Grid FlowDirection="RightToLeft">
         <Frame x:Name="ContentFrame" />
     </Grid>
 </Window>
